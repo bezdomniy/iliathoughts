@@ -1,0 +1,49 @@
+baseURL = "http://iliathoughts.com.s3-website-ap-southeast-2.amazonaws.com/"
+languageCode = "en-us"
+title = "Ilia thoughts"
+theme = "monopriv"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+
+[deployment]
+# By default, files are uploaded in an arbitrary order.
+# Files that match the regular expressions in the "Order" list
+# will be uploaded first, in the listed order.
+order = [".jpg$", ".gif$"]
+
+[[deployment.targets]]
+# An arbitrary name for this target.
+name = "mysite"
+URL = "s3://iliathoughts.com?region=ap-southeast-2"
+
+[[deployment.matchers]]
+#  Cache static assets for 1 year.
+pattern = "^.+\\.(js|css|svg|ttf)$"
+cacheControl = "max-age=31536000, no-transform, public"
+gzip = true
+
+[[deployment.matchers]]
+pattern = "^.+\\.(png|jpg)$"
+cacheControl = "max-age=31536000, no-transform, public"
+gzip = false
+
+[[deployment.matchers]]
+pattern = "^.+\\.(html|xml|json)$"
+gzip = true
+
+[params]
+about = "Thoughts on data analytics, software development, and other things."
+img = "img/logo.png"
+github = "https://github.com/bezdomniy"
+email = "ilia.shibaev@protonmail.com"
+# site meta description
+metadesc = "A simple privacy oriented bootstrap hugo blog"
+# site meta keywords
+metakeys = "hugo, simple, minimal, bootstrap, blog"
+# enable/disable disqus comments 
+disqus = false 
+# enable/disable google analytics 
+analytics = false 
