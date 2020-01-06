@@ -1,18 +1,23 @@
 ---
 title: "Ray Tracer"
 date: 2020-01-01T14:08:06+11:00
-tags: ["ray tracer", "ray tracer challenge", "webassembly", "emscripten"]
-draft: true
+tags: ["ray tracer", "ray tracer challenge", "webassembly", "emscripten", "C++"]
+draft: false
 ---
 
-My implementation of most of the Ray Tracer Challenge book by Jamis Buck. Implemented in C++11 and compiled to WebAssembly.
+My implementation of Chapters 1-12 and 15 of The Ray Tracer Challenge book by Jamis Buck. Implemented in C++ and compiled to WebAssembly. There is a small bug where I get OOM error on very large canvas sizes, but I'll fix this soon.
+
+Just enter the scene description (according to the style used in the book) in the textbox below and click "go!" to generate the render.
+
+Let me know what you think. Code is available on my <a href="https://github.com/bezdomniy/graphics/tree/master/rayTracer">Github</a>. Let me know if you have any tips for me.
 
 <!DOCTYPE HTML>
 <html>
 <script id="jsscript" src="/js/RayTracer.wasm.js"></script>
 <body>
     <br>
-	<textarea rows=15 cols=50 id="sceneTextArea">- add: camera
+<textarea rows=15 cols=50 id="sceneTextArea">
+- add: camera
   width: 500
   height: 250
   field-of-view: 1.0472
@@ -20,7 +25,7 @@ My implementation of most of the Ray Tracer Challenge book by Jamis Buck. Implem
   to: [0, 1, 0]
   up: [0, 1, 0]
 - add: light
-  at: [-10, 10, 0]
+  at: [-5, 10, -5]
   intensity: [1, 1, 1]
 - define: base-material
   value:
@@ -29,27 +34,64 @@ My implementation of most of the Ray Tracer Challenge book by Jamis Buck. Implem
     ambient: 0.1
     specular: 0.3
     shininess: 200
-    reflective: 0.1
 - define: blue-material
   extend: base-material
   value:
     color: [0.537, 0.831, 0.914]
-- define: white-material
+    # reflective: 0.2
+    transparency: 0.8
+    refractive-index: 1.52
+- define: pink-material
   extend: base-material
   value:
-    color: [1, 1, 1]
+    color: [1, 0.42, 0.7]
 - define: standard-transform
   value:
     - [scale, 0.5, 0.5, 0.5]
     - [translate, 1, -1, 1]
+- define: dalmatian-material
+  value:
+    pattern:
+      type: checkers
+      perturbed: 0.5
+      colors:
+        - [0.898039215686275, 0.156862745098039, 0.156862745098039]
+        - [1, 1, 1]
+      transform:
+        - [scale, 0.25, 0.25, 0.25]
+    diffuse: 0.7
+    ambient: 0.1
+- define: hippy-material
+  value:
+    pattern:
+      type: blended
+      perturbed: 0.1
+      patterns:
+        - type: stripes
+          perturbed: 0.1
+          colors:
+            - [0.0941176470588235, 0.690196078431373, 0.862745098039216]
+            - [0.87843137254902, 0.709803921568627, 0.4]
+          transform:
+            - [scale, 0.25, 0.25, 0.25]
+        - type: stripes
+          perturbed: 0.1
+          colors:
+            - [0.0196078431372549, 0.403921568627451, 0.325490196078431]
+            - [0.898039215686275, 0.156862745098039, 0.156862745098039]
+          transform:
+            - [rotate-y, 1.5708]
+            - [scale, 0.25, 0.25, 0.25]
+    diffuse: 0.7
+    ambient: 0.1
 - add: sphere
-  material: blue-material
+  material: dalmatian-material
   transform:
     - [rotate-y, 1]
     - [rotate-x, 1]
     - [translate, -0.5, 1, 0.5]
 - add: sphere
-  material: blue-material
+  material: pink-material
   transform:
     - [scale, 0.5, 0.5, 0.5]
     - [translate, 1.5, 0.5, -0.5]
@@ -59,30 +101,12 @@ My implementation of most of the Ray Tracer Challenge book by Jamis Buck. Implem
     - [scale, 0.33, 0.33, 0.33]
     - [translate, -1.5, 0.33, -0.75]
 - add: plane
-  material:
-    pattern:
-      type: checkers
-      colors:
-        - [0, 0, 0]
-        - [1, 1, 1]
-      transform:
-        - [scale, 0.25, 0.25, 0.25]
-    diffuse: 0.7
-    ambient: 0.1
-- add: plane
-  material: 
-    pattern:
-      type: checkers
-      colors:
-        - [0, 0, 0]
-        - [1, 1, 1]
-      transform:
-        - [scale, 0.25, 0.25, 0.25]
-    diffuse: 0.7
-    ambient: 0.1
+  material: hippy-material
   transform:
     - [rotate-x, 1.5708]
     - [translate, 0, 0, 2.5]
+- add: plane
+  material: hippy-material
 </textarea>
 <button id="gobutton">go!</button>
 <br>
