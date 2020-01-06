@@ -1,4 +1,4 @@
-baseURL = "http://iliathoughts.com.s3-website-ap-southeast-2.amazonaws.com/"
+baseURL = "http://iliathoughts.com"
 languageCode = "en-us"
 title = "Ilia thoughts"
 theme = "monopriv"
@@ -21,8 +21,8 @@ URL = "s3://iliathoughts.com?region=ap-southeast-2"
 
 [[deployment.matchers]]
 #  Cache static assets for 1 year.
-pattern = "^.+\\.(js|css|svg|ttf)$"
-cacheControl = "max-age=31536000, no-transform, public"
+pattern = "^.+\\.(js|wasm|css|svg|ttf)$"
+cacheControl = "must-revalidate, no-cache, max-age=0, no-transform, public"
 gzip = true
 
 [[deployment.matchers]]
