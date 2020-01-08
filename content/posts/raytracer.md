@@ -115,24 +115,42 @@ EDIT: If it doesn't run, please clear your cache. I messed up the http headers t
 </textarea>
 <button id="gobutton">go!</button>
 <br>
-<img id="outImage" />
+<!-- <img id="outImage" /> -->
+<canvas id="outCanvas"></canvas>
 	<script type="module">
-	    import * as Magick from 'https://knicknic.github.io/wasm-imagemagick/magickApi.js';
+	    // import * as Magick from 'https://knicknic.github.io/wasm-imagemagick/magickApi.js';
         var button = document.getElementById("gobutton");
         var textarea = document.getElementById("sceneTextArea");
         button.addEventListener(
             "click", function() {
-            Module.runRayTracer(textarea.value);
-        let DoMagickCall = async function()
-        {
-        const outputImage = document.getElementById("outImage");
-        const sourceBytes =  await Module.FS.readFile('out.ppm');
-        let processedFiles = await Magick.Call([ {'name' : 'out.ppm', 'content' : sourceBytes} ], [ "convert", "out.ppm", "out.png" ]);
-        const firstOutputImage = processedFiles[0];
-        outputImage.src = URL.createObjectURL(firstOutputImage["blob"]);
-        };
-        DoMagickCall();
-        });
+            // Module.runRayTracerPPM(textarea.value);
+            var bytes = Module.runRayTracerRGBA(textarea.value);
+            const canvas = document.getElementById('outCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.canvas.width = 600;
+            ctx.canvas.height = 300;
+            const imageData = ctx.createImageData(600, 300);
+            // Iterate through every pixel
+            for (let i = 0; i < imageData.data.length; i += 4) {
+              // Modify pixel data
+              imageData.data[i + 0] = bytes[i + 0];  // R value
+              imageData.data[i + 1] = bytes[i + 1];    // G value
+              imageData.data[i + 2] = bytes[i + 2];  // B value
+              imageData.data[i + 3] = 255;  // A value
+            }
+            // Draw image data to the canvas
+            ctx.putImageData(imageData, 0, 0);
+            });
+        // let DoMagickCall = async function()
+        // {
+        // const outputImage = document.getElementById("outImage");
+        // const sourceBytes =  await Module.FS.readFile('out.ppm');
+        // let processedFiles = await Magick.Call([ {'name' : 'out.ppm', 'content' : sourceBytes} ], [ "convert", "out.ppm", "out.png" ]);
+        // const firstOutputImage = processedFiles[0];
+        // outputImage.src = URL.createObjectURL(firstOutputImage["blob"]);
+        // };
+        // DoMagickCall();
+        // });
 	</script>
 	</body>
 </html>
