@@ -11,6 +11,8 @@ Just enter the scene description (according to the style used in the book) in th
 
 Let me know what you think. Code is available on my <a href="https://github.com/bezdomniy/graphics/tree/master/rayTracer">Github</a>. Let me know if you have any tips for me.
 
+EDIT: If it doesn't run, please clear your cache. I messed up the http headers the first time I pushed this and the wasm module cache never expires... so if you ran the site previously it won't update.
+
 <!DOCTYPE HTML>
 <html>
 <script id="jsscript" src="/js/RayTracer.wasm.js"></script>
@@ -18,11 +20,11 @@ Let me know what you think. Code is available on my <a href="https://github.com/
     <br>
 <textarea rows=15 cols=50 id="sceneTextArea">
 - add: camera
-  width: 500
-  height: 250
+  width: 600
+  height: 300
   field-of-view: 1.0472
-  from: [0, 1.5, -5]
-  to: [0, 1, 0]
+  from: [-.2, 2, -5]
+  to: [0, 0.8, 0]
   up: [0, 1, 0]
 - add: light
   at: [-5, 10, -5]
@@ -38,13 +40,13 @@ Let me know what you think. Code is available on my <a href="https://github.com/
   extend: base-material
   value:
     color: [0.537, 0.831, 0.914]
-    # reflective: 0.2
-    transparency: 0.8
-    refractive-index: 1.52
+    transparency: 0.5
+    refractive-index: 1.655
 - define: pink-material
   extend: base-material
   value:
     color: [1, 0.42, 0.7]
+    reflective: 0.2
 - define: standard-transform
   value:
     - [scale, 0.5, 0.5, 0.5]
@@ -55,12 +57,14 @@ Let me know what you think. Code is available on my <a href="https://github.com/
       type: checkers
       perturbed: 0.5
       colors:
-        - [0.898039215686275, 0.156862745098039, 0.156862745098039]
+        - [0.90, 0.16, 0.16]
         - [1, 1, 1]
       transform:
         - [scale, 0.25, 0.25, 0.25]
     diffuse: 0.7
     ambient: 0.1
+    transparency: 0.8
+    refractive-index: 1.52
 - define: hippy-material
   value:
     pattern:
@@ -70,36 +74,37 @@ Let me know what you think. Code is available on my <a href="https://github.com/
         - type: stripes
           perturbed: 0.1
           colors:
-            - [0.0941176470588235, 0.690196078431373, 0.862745098039216]
-            - [0.87843137254902, 0.709803921568627, 0.4]
+            - [0.09, 0.69, 0.86]
+            - [0.88, 0.71, 0.4]
           transform:
             - [scale, 0.25, 0.25, 0.25]
         - type: stripes
           perturbed: 0.1
           colors:
-            - [0.0196078431372549, 0.403921568627451, 0.325490196078431]
-            - [0.898039215686275, 0.156862745098039, 0.156862745098039]
+            - [0.02, 0.40, 0.33]
+            - [0.9, 0.16, 0.16]
           transform:
             - [rotate-y, 1.5708]
             - [scale, 0.25, 0.25, 0.25]
     diffuse: 0.7
     ambient: 0.1
-- add: sphere
-  material: dalmatian-material
-  transform:
-    - [rotate-y, 1]
-    - [rotate-x, 1]
-    - [translate, -0.5, 1, 0.5]
-- add: sphere
+- add: cylinder
+  args: [-1, 1, 1]
   material: pink-material
+  transform:
+    - [scale, 0.75, 0.75, 0.75]
+    - [rotate-y, -0.5]
+    - [translate, -0.2, 0.75, 0.5]
+- add: cube
+  material: dalmatian-material
   transform:
     - [scale, 0.5, 0.5, 0.5]
     - [translate, 1.5, 0.5, -0.5]
 - add: sphere
   material: blue-material
   transform:
-    - [scale, 0.33, 0.33, 0.33]
-    - [translate, -1.5, 0.33, -0.75]
+    - [scale, 0.5, 0.5, 0.5]
+    - [translate, -1.5, 0.5, -1]
 - add: plane
   material: hippy-material
   transform:
