@@ -1,5 +1,5 @@
 # Hugo default output directory
 /public
-/static/js
+# /static/js
 *.wasm
-*.png
+# *.png
