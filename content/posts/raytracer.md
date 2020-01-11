@@ -109,48 +109,87 @@ EDIT: If it doesn't run, please clear your cache. I messed up the http headers t
   material: hippy-material
   transform:
     - [rotate-x, 1.5708]
-    - [translate, 0, 0, 2.5]
+    - [translate, 0, 0, 5.01]
 - add: plane
   material: hippy-material
 </textarea>
 <button id="gobutton">go!</button>
 <br>
+<button id="leftbutton">left</button>
+<button id="rightbutton">right</button>
+<br>
 <!-- <img id="outImage" /> -->
 <canvas id="outCanvas"></canvas>
-	<script type="module">
+	<script>
 	    // import * as Magick from 'https://knicknic.github.io/wasm-imagemagick/magickApi.js';
-        var button = document.getElementById("gobutton");
+        var goButton = document.getElementById("gobutton");
+        var leftButton = document.getElementById("leftbutton");
+        var rightButton = document.getElementById("rightbutton");
         var textarea = document.getElementById("sceneTextArea");
-        button.addEventListener(
+        // Module.onRuntimeInitialized = _ => {
+        Module['onRuntimeInitialized'] = function() {
+          console.log("loaded");
+          const runner = new Module.EmscriptenRunner();
+          function updateRender() {            
+            if (!runner.done()) {
+              var i;
+              var bytes = runner.renderToRGBA();
+              const canvas = document.getElementById('outCanvas');
+              const ctx = canvas.getContext('2d');
+              ctx.canvas.width = runner.getWidth();
+              ctx.canvas.height = runner.getHeight();
+              const imageData = ctx.createImageData(ctx.canvas.width, ctx.canvas.height);
+              // Iterate through every pixel
+              for (let i = 0; i < imageData.data.length; i += 4) {
+                // Modify pixel data
+                imageData.data[i + 0] = bytes[i + 0];  // R value
+                imageData.data[i + 1] = bytes[i + 1];    // G value
+                imageData.data[i + 2] = bytes[i + 2];  // B value
+                imageData.data[i + 3] = 255;  // A value
+              }
+              // Draw image data to the canvas
+              ctx.putImageData(imageData, 0, 0);
+            } 
+          }
+        // const runner = new Module.EmscriptenRunner(textarea.value);
+        var t;
+        var updateTime= 10;
+        var repeatLeft = function (action) {
+                  runner.moveLeft();
+                  t = setTimeout(repeatLeft, updateTime);
+              }
+        var repeatRight = function (action) {
+                  runner.moveRight();
+                  t = setTimeout(repeatRight, updateTime);
+              }      
+        goButton.addEventListener(
             "click", function() {
-            // Module.runRayTracerPPM(textarea.value);
-            var bytes = Module.runRayTracerRGBA(textarea.value);
-            const canvas = document.getElementById('outCanvas');
-            const ctx = canvas.getContext('2d');
-            ctx.canvas.width = 600;
-            ctx.canvas.height = 300;
-            const imageData = ctx.createImageData(600, 300);
-            // Iterate through every pixel
-            for (let i = 0; i < imageData.data.length; i += 4) {
-              // Modify pixel data
-              imageData.data[i + 0] = bytes[i + 0];  // R value
-              imageData.data[i + 1] = bytes[i + 1];    // G value
-              imageData.data[i + 2] = bytes[i + 2];  // B value
-              imageData.data[i + 3] = 255;  // A value
+              runner.init(textarea.value);
+              let showImg = setInterval(updateRender, updateTime);
             }
-            // Draw image data to the canvas
-            ctx.putImageData(imageData, 0, 0);
-            });
-        // let DoMagickCall = async function()
-        // {
-        // const outputImage = document.getElementById("outImage");
-        // const sourceBytes =  await Module.FS.readFile('out.ppm');
-        // let processedFiles = await Magick.Call([ {'name' : 'out.ppm', 'content' : sourceBytes} ], [ "convert", "out.ppm", "out.png" ]);
-        // const firstOutputImage = processedFiles[0];
-        // outputImage.src = URL.createObjectURL(firstOutputImage["blob"]);
-        // };
-        // DoMagickCall();
-        // });
-	</script>
-	</body>
+            );
+        leftButton.addEventListener(
+            "mousedown", function() {
+              repeatLeft();
+            }
+            );
+        rightButton.addEventListener(
+            "mousedown", function() {
+              repeatRight();
+            }
+            );
+        leftButton.addEventListener(
+            "mouseup", function() {
+              clearTimeout(t);
+            }
+            );
+        rightButton.addEventListener(
+            "mouseup", function() {
+              clearTimeout(t);
+            }
+            );
+          };
+    </script>
+    </body>
+
 </html>
