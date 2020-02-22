@@ -21,97 +21,144 @@ EDIT: If it doesn't run, please clear your cache. I messed up the http headers t
 <textarea rows=15 cols=50 id="sceneTextArea">
 - add: camera
   width: 600
-  height: 300
-  field-of-view: 1.0472
-  from: [-.2, 2, -5]
-  to: [0, 0.8, 0]
+  height: 200
+  field-of-view: 0.9
+  from: [0, 0, -9]
+  to: [0, 0, 0]
   up: [0, 1, 0]
 - add: light
-  at: [-5, 10, -5]
-  intensity: [1, 1, 1]
-- define: base-material
+  at: [ 10000, 10000, -10000 ]
+  intensity: [ 0.25, 0.25, 0.25 ]
+- add: light
+  at: [ -10000, 10000, -10000 ]
+  intensity: [ 0.25, 0.25, 0.25 ]
+- add: light
+  at: [ 10000, -10000, -10000 ]
+  intensity: [ 0.25, 0.25, 0.25 ]
+- add: light
+  at: [ -10000, -10000, -10000 ]
+  intensity: [ 0.25, 0.25, 0.25 ]
+- define: leg
   value:
-    color: [1, 1, 1]
-    diffuse: 0.7
-    ambient: 0.1
-    specular: 0.3
-    shininess: 200
-- define: blue-material
-  extend: base-material
+    add: group
+    children:
+      - add: sphere
+        transform:
+          - [ scale, 0.25, 0.25, 0.25 ]
+          - [ translate, 0, 0, -1 ]
+      - add: cylinder
+        args: [0, 1, 0]
+        transform:
+          - [ scale, 0.25, 1, 0.25 ]
+          - [ rotate-z, -1.5708 ]
+          - [ rotate-y, -0.5236 ]
+          - [ translate, 0, 0, -1 ]
+- define: cap
   value:
-    color: [0.537, 0.831, 0.914]
-    transparency: 0.5
-    refractive-index: 1.655
-- define: pink-material
-  extend: base-material
+    add: group
+    children:
+      - add: cone
+        args: [-1, 0, 0]
+        transform:
+          - [ scale, 0.24606, 1.37002, 0.24606 ]
+          - [ rotate-x, -0.7854 ]
+      - add: cone
+        args: [-1, 0, 0]
+        transform:
+          - [ scale, 0.24606, 1.37002, 0.24606 ]
+          - [ rotate-x, -0.7854 ]
+          - [ rotate-y, 1.0472 ]
+      - add: cone
+        args: [-1, 0, 0]
+        transform:
+          - [ scale, 0.24606, 1.37002, 0.24606 ]
+          - [ rotate-x, -0.7854 ]
+          - [ rotate-y, 2.0944 ]
+      - add: cone
+        args: [-1, 0, 0]
+        transform:
+          - [ scale, 0.24606, 1.37002, 0.24606 ]
+          - [ rotate-x, -0.7854 ]
+          - [ rotate-y, 3.1416 ]
+      - add: cone
+        args: [-1, 0, 0]
+        transform:
+          - [ scale, 0.24606, 1.37002, 0.24606 ]
+          - [ rotate-x, -0.7854 ]
+          - [ rotate-y, 4.1888 ]
+      - add: cone
+        args: [-1, 0, 0]
+        transform:
+          - [ scale, 0.24606, 1.37002, 0.24606 ]
+          - [ rotate-x, -0.7854 ]
+          - [ rotate-y, 5.236 ]
+- define: wacky
   value:
-    color: [1, 0.42, 0.7]
-    reflective: 0.2
-- define: standard-transform
-  value:
-    - [scale, 0.5, 0.5, 0.5]
-    - [translate, 1, -1, 1]
-- define: dalmatian-material
-  value:
-    pattern:
-      type: checkers
-      perturbed: 0.5
-      colors:
-        - [0.90, 0.16, 0.16]
-        - [1, 1, 1]
-      transform:
-        - [scale, 0.25, 0.25, 0.25]
-    diffuse: 0.7
-    ambient: 0.1
-    transparency: 0.8
-    refractive-index: 1.52
-- define: hippy-material
-  value:
-    pattern:
-      type: blended
-      perturbed: 0.1
-      patterns:
-        - type: stripes
-          perturbed: 0.1
-          colors:
-            - [0.09, 0.69, 0.86]
-            - [0.88, 0.71, 0.4]
-          transform:
-            - [scale, 0.25, 0.25, 0.25]
-        - type: stripes
-          perturbed: 0.1
-          colors:
-            - [0.02, 0.40, 0.33]
-            - [0.9, 0.16, 0.16]
-          transform:
-            - [rotate-y, 1.5708]
-            - [scale, 0.25, 0.25, 0.25]
-    diffuse: 0.7
-    ambient: 0.1
-- add: cylinder
-  args: [-1, 1, 1]
-  material: pink-material
-  transform:
-    - [scale, 0.75, 0.75, 0.75]
-    - [rotate-y, -0.5]
-    - [translate, -0.2, 0.75, 0.5]
-- add: cube
-  material: dalmatian-material
-  transform:
-    - [scale, 0.5, 0.5, 0.5]
-    - [translate, 1.5, 0.5, -0.5]
-- add: sphere
-  material: blue-material
-  transform:
-    - [scale, 0.5, 0.5, 0.5]
-    - [translate, -1.5, 0.5, -1]
+    add: group
+    children:
+      - add: leg
+      - add: leg
+        transform:
+          - [ rotate-y, 1.0472 ]
+      - add: leg
+        transform:
+          - [ rotate-y, 2.0944 ]
+      - add: leg
+        transform:
+          - [ rotate-y, 3.1416 ]
+      - add: leg
+        transform:
+          - [ rotate-y, 4.1888 ]
+      - add: leg
+        transform:
+          - [ rotate-y, 5.236 ]
+      - add: cap
+        transform:
+          - [ translate, 0, 1, 0 ]
+      - add: cap
+        transform:
+          - [ translate, 0, 1, 0 ]
+          - [ rotate-x, 3.1416 ]
 - add: plane
-  material: hippy-material
   transform:
-    - [rotate-x, 1.5708]
-    - [translate, 0, 0, 5.01]
-- add: plane
-  material: hippy-material
+    - [ rotate-x, 1.5708 ]
+    - [ translate, 0, 0, 100 ]
+  material:
+    color: [ 1, 1, 1 ]
+    ambient: 1
+    diffuse: 0
+    specular: 0
+- add: wacky
+  transform:
+    - [ rotate-y, 0.1745 ]
+    - [ rotate-x, 0.4363 ]
+    - [ translate, -2.8, 0, 0 ]
+  material:
+    color: [ 0.9, 0.2, 0.4 ]
+    ambient: 0.2
+    diffuse: 0.8
+    specular: 0.7
+    shininess: 20
+- add: wacky
+  transform:
+    - [ rotate-y, 0.1745 ]
+  material:
+    color: [ 0.2, 0.9, 0.6 ]
+    ambient: 0.2
+    diffuse: 0.8
+    specular: 0.7
+    shininess: 20
+- add: wacky
+  transform:
+    - [ rotate-y, -0.1745 ]
+    - [ rotate-x, -0.4363 ]
+    - [ translate, 2.8, 0, 0 ]
+  material:
+    color: [ 0.2, 0.3, 1.0 ]
+    ambient: 0.2
+    diffuse: 0.8
+    specular: 0.7
+    shininess: 20
 </textarea>
 <button id="gobutton">go!</button>
 <br>
@@ -153,7 +200,7 @@ EDIT: If it doesn't run, please clear your cache. I messed up the http headers t
           }
         // const runner = new Module.EmscriptenRunner(textarea.value);
         var t;
-        var updateTime= 10;
+        var updateTime= 33;
         var repeatLeft = function (action) {
                   runner.moveLeft();
                   t = setTimeout(repeatLeft, updateTime);
