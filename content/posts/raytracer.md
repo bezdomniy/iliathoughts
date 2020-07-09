@@ -20,7 +20,6 @@ EDIT: If it doesn't run, please clear your cache. I messed up the http headers t
 <textarea rows=15 cols=50 id="sceneTextArea">
 </textarea>
 <br>
-<!-- <input id="myFile" type="text"/> -->
     <select id="scenes" onChange="return setScene()">
         <option scene="0" value="Choose a scene">Choose a scene</option>
         <option scene="1" value="/rayTracerScenes/reflectionScene.yaml">Reflections</option>
@@ -30,6 +29,8 @@ EDIT: If it doesn't run, please clear your cache. I messed up the http headers t
         <option scene="5" value="/rayTracerScenes/shadowPuppets.yaml">Shadow Puppets</option>
         <option scene="6" value="/rayTracerScenes/coverScene.yaml">Cover Scene</option>
         <option scene="7" value="/rayTracerScenes/christmas.yaml">Christmas</option>
+        <option scene="8" value="/rayTracerScenes/globe.yaml">Globe</option>
+        <option scene="9" value="/rayTracerScenes/skybox.yaml">Skybox</option>
     </select>
     <button id="gobutton">go!</button>
 <br>
@@ -38,7 +39,6 @@ EDIT: If it doesn't run, please clear your cache. I messed up the http headers t
 <br>
 <canvas id="outCanvas"></canvas>
 <script>
-// import \* as Magick from 'https://knicknic.github.io/wasm-imagemagick/magickApi.js';
 var goButton = document.getElementById("gobutton");
 var leftButton = document.getElementById("leftbutton");
 var rightButton = document.getElementById("rightbutton");

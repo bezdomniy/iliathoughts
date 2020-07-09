@@ -21,7 +21,7 @@ URL = "s3://iliathoughts.com?region=ap-southeast-2"
 
 [[deployment.matchers]]
 #  Cache static assets for 1 year.
-pattern = "^.+\\.(js|wasm|css|svg|ttf)$"
+pattern = "^.+\\.(js|wasm|data|css|svg|ttf)$"
 cacheControl = "must-revalidate, no-cache, max-age=0, no-transform, public"
 gzip = true
 

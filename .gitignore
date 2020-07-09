@@ -2,4 +2,5 @@
 /public
 # /static/js
 *.wasm
+static/js/node_modules
 # *.png
