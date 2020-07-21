@@ -18,9 +18,15 @@ function getCanvasSize(sceneDesc) {
   }
 }
 
-function updateRender(runner, pixelsToRender, ctx) {
+function copy(src) {
+  var dst = new ArrayBuffer(src.byteLength);
+  new Uint8Array(dst).set(new Uint8Array(src));
+  return dst;
+}
+
+function updateRender(runner, sceneBytes, pixelsToRender, ctx) {
   // var i;
-  var bytes = runner.renderToRGBA(textarea.value, pixelsToRender);
+  var bytes = runner.renderProcessedToRGBA(sceneBytes, pixelsToRender);
   var imageData;
 
   imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -43,6 +49,7 @@ Module["onRuntimeInitialized"] = function () {
   console.log("loaded");
   // TODO put this into a web worker
   const runner = new Module.EmscriptenRunner();
+  const scene = new Module.EmscriptenScene();
 
   // TODO - to make this work, camera state needs to be in JS
   var repeatLeft = function (action) {
@@ -80,8 +87,13 @@ Module["onRuntimeInitialized"] = function () {
       }
     }
 
-    updateRender(runner, firstBatch, ctx);
-    updateRender(runner, secondBatch, ctx);
+    var wasmBytes = scene.processScene(textarea.value);
+    // TODO seems making a copy of the array solves the large scene problem. 
+    // Find out why and fix, or maybe just copy and delete scene object.
+    var bytes = copy(wasmBytes);
+
+    updateRender(runner, bytes, firstBatch, ctx);
+    updateRender(runner, bytes, secondBatch, ctx);
 
     // let showImg = setInterval(updateRender, updateTime);
   });
