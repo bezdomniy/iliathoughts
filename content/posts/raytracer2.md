@@ -7,8 +7,6 @@ draft: false
 
 <!DOCTYPE HTML>
 <html>
-<script id="jsscript" src="/js/RayTracer.wasm.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/3.14.0/js-yaml.js"></script>
 <body>
 <textarea rows=15 cols=50 id="sceneTextArea">
 </textarea>
@@ -30,9 +28,12 @@ draft: false
 <button id="leftbutton">left</button>
 <button id="rightbutton">right</button>
 <br>
-<canvas id="outCanvas"></canvas>
-<script id="rayTracer" src="/js/rayTracerPage.js"></script>
-
+<canvas id="canvas"></canvas>
+<script id="jsscript" src="/js/Runner.js"></script>
+<script>
+    Module({
+        canvas: (() => document.getElementById('canvas'))(),
+    })
+</script>
 </body>
-
 </html>
