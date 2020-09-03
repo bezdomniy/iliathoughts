@@ -31,9 +31,19 @@ draft: false
 <canvas id="canvas"></canvas>
 <script id="jsscript" src="/js/Runner.js"></script>
 <script>
-    Module({
-        canvas: (() => document.getElementById('canvas'))(),
-    })
+    // Module({
+    //     canvas: (() => document.getElementById('canvas'))(),
+    // });
+    Module["onRuntimeInitialized"] = function () {
+        Module.canvas = (() => document.getElementById('canvas'))();
+        var goButton = document.getElementById("gobutton");
+        goButton.addEventListener(
+            "click", function() {
+            Module._mainf();
+            // Module.ccall('mainf', null, null, null);
+            }
+        );
+    };
 </script>
 </body>
 </html>
