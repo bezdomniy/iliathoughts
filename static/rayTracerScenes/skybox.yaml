@@ -33,22 +33,22 @@
       mapping: cube
       left:
         type: image
-        file: rayTracerTextures/LancellottiChapel/negx.jpg
+        file: /rayTracerTextures/LancellottiChapel/negx.jpg
       right:
         type: image
-        file: rayTracerTextures/LancellottiChapel/posx.jpg
+        file: /rayTracerTextures/LancellottiChapel/posx.jpg
       front:
         type: image
-        file: rayTracerTextures/LancellottiChapel/posz.jpg
+        file: /rayTracerTextures/LancellottiChapel/posz.jpg
       back:
         type: image
-        file: rayTracerTextures/LancellottiChapel/negz.jpg
+        file: /rayTracerTextures/LancellottiChapel/negz.jpg
       up:
         type: image
-        file: rayTracerTextures/LancellottiChapel/posy.jpg
+        file: /rayTracerTextures/LancellottiChapel/posy.jpg
       down:
         type: image
-        file: rayTracerTextures/LancellottiChapel/negy.jpg
+        file: /rayTracerTextures/LancellottiChapel/negy.jpg
     diffuse: 0
     specular: 0
     ambient: 1

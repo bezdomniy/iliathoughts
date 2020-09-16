@@ -1,4 +1,4 @@
-baseURL = "http://iliathoughts.com"
+baseURL = "https://iliathoughts.com"
 languageCode = "en-us"
 title = "Ilia thoughts"
 theme = "monopriv"
@@ -8,11 +8,17 @@ theme = "monopriv"
     [markup.goldmark.renderer]
       unsafe = true
 
+[server]
+  [[server.headers]]
+    [server.headers.values]
+      Cross-Origin-Opener-Policy = "same-origin"
+      Cross-Origin-Embedder-Policy = "require-corp"
+
 [deployment]
 # By default, files are uploaded in an arbitrary order.
 # Files that match the regular expressions in the "Order" list
 # will be uploaded first, in the listed order.
-order = [".jpg$", ".gif$"]
+order = [".json$", ".wasm$",".data$"]
 
 [[deployment.targets]]
 # An arbitrary name for this target.
@@ -20,19 +26,25 @@ name = "mysite"
 URL = "s3://iliathoughts.com?region=ap-southeast-2"
 
 [[deployment.matchers]]
-#  Cache static assets for 1 year.
-pattern = "^.+\\.(js|wasm|data|css|svg|ttf)$"
+#  Cache static assets for 1 hour.
+pattern = "^.+\\.(html|js|wasm|css|svg|ttf|yaml)$"
 cacheControl = "must-revalidate, no-cache, max-age=0, no-transform, public"
-gzip = true
-
-[[deployment.matchers]]
-pattern = "^.+\\.(png|jpg)$"
-cacheControl = "max-age=31536000, no-transform, public"
 gzip = false
 
 [[deployment.matchers]]
-pattern = "^.+\\.(html|xml|json)$"
-gzip = true
+pattern = "^.+\\.(data)$"
+cacheControl = "max-age=3600, no-transform, public"
+gzip = false
+
+[[deployment.matchers]]
+pattern = "^.+\\.(png|jpg|obj)$"
+cacheControl = "max-age=3600, no-transform, public"
+gzip = false
+
+[[deployment.matchers]]
+pattern = "^.+\\.(xml|json)$"
+cacheControl = "max-age=3600, no-transform, public"
+gzip = false
 
 [params]
 about = "Thoughts on data analytics, software development, and other things."
