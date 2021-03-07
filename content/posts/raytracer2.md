@@ -25,6 +25,10 @@ So try it out below! I have done some but not a huge amount of error handling so
   <!DOCTYPE HTML>
   <html>
   <body>
+  <label>Select number of web workers: </label>
+<select id="coreSelect">
+</select>
+<br>
   <textarea rows=15 cols=50 id="sceneTextArea">
   </textarea>
   <br>
@@ -54,7 +58,26 @@ So try it out below! I have done some but not a huge amount of error handling so
         //   Module['doNotCaptureKeyboard'] = true;
         // Module['keyboardListeningElement'] = document.getElementById('canvas');
       var textarea = document.getElementById("sceneTextArea");
+      var select = document.getElementById("coreSelect"); 
       Module["onRuntimeInitialized"] = function () {
+          const logicalProcessors = window.navigator.hardwareConcurrency;
+            var options = Array.from(new Array(logicalProcessors), (x, i) => i + 1);
+            // console.log(options);
+            for(var i = 0; i < options.length; i++) {
+                var opt = options[i];
+                var el = document.createElement("option");
+                el.textContent = opt;
+                el.value = opt;
+                select.appendChild(el);
+            }
+            if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+            // true for mobile device
+            select.selectedIndex = parseInt(logicalProcessors/2) - 1;
+            }else{
+            // false for not mobile device
+            select.selectedIndex = parseInt(logicalProcessors) - 1;
+            // document.write("not mobile device");
+            }
           Module.canvas = (() => document.getElementById('canvas'))();
           var goButton = document.getElementById("gobutton");
           // var testButton = document.getElementById("testButton");
@@ -62,7 +85,8 @@ So try it out below! I have done some but not a huge amount of error handling so
               "click", function() {
               // Module._mainf(textarea.value);
             //   const textCopy = textarea.value;
-              Module.ccall('draw', null, ["string"], [textarea.value]);
+            console.log(select.options[select.selectedIndex].value);
+              Module.ccall('draw', null, ["string","number"], [textarea.value,select.options[select.selectedIndex].value]);
               // Module._test();
           }
           );
